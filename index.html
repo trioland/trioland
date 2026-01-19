@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trioland Audio Adventures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-sand: #F4E1D2;
+            --color-gold: #FFD700;
+            --color-night: #1A237E;
+            --color-stone: #5D4037;
+            --color-moss: #7CB342;
+            --color-moss-dark: #558B2F;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, #66e7ff 0%, #d2f4f3 50%, #FFFDD0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #3e2723;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        /* Контейнер для волшебной пыльцы */
+        #dust-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .dust-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.4);
+            animation: float-up-magic linear infinite, twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes float-up-magic {
+            0% {
+                transform: translateY(110vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            15% { opacity: 0.7; }
+            50% { transform: translateY(50vh) translateX(30px) scale(1.1); }
+            85% { opacity: 0.7; }
+            100% {
+                transform: translateY(-10vh) translateX(-20px) scale(0.4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            opacity: 0; 
+            transition: opacity 0.3s ease-in;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container.ready {
+            opacity: 1;
+        }
+
+        header {
+            padding: 30px 0 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 100px;
+            width: auto;
+            display: block;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 25px 20px;
+            margin: 15px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-image-box {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            color: var(--color-stone);
+            margin: 0 0 12px 0;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--color-stone);
+            font-weight: 700;
+            line-height: 1.4;
+            margin: 0 0 8px 0;
+        }
+
+        .small-hint {
+            font-size: 0.9rem;
+            color: #795548;
+            font-weight: 600;
+        }
+
+        .info-block {
+            text-align: left;
+            margin: 20px 0;
+            padding: 0 5px;
+        }
+
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--color-stone);
+            text-align: center;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #4e342e;
+            margin-bottom: 15px;
+        }
+
+        .important-note {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 12px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #3e2723;
+            border: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        .action-block {
+            margin: 20px 0 25px 0;
+        }
+
+        .magic-btn {
+            display: block;
+            text-decoration: none;
+            background: var(--color-moss);
+            color: white !important;
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 18px;
+            border-radius: 50px;
+            box-shadow: 
+                0 6px 0 var(--color-moss-dark), 
+                0 12px 20px rgba(0,0,0,0.15);
+            transition: transform 0.1s ease;
+            animation: pulse 2.5s infinite;
+            user-select: none;
+        }
+
+        .magic-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--color-moss-dark), 0 5px 10px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-stone);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.4rem; }
+            .magic-btn { font-size: 1.1rem; padding: 166px; }
+            /* Исправление padding для кнопки на мобайле */
+            .magic-btn { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="dust-container"></div>
+
+    <div class="container" id="main-app">
+        <header>
+            <div class="logo">
+                <img src="D:\klients2\00-my-project\mult-serial\logo\fin\0001-logo-fin2.png" alt="Lumi">
+            </div>
+        </header>
+
+        <div class="hero-section">
+            <div class="hero-image-box">
+                <img src="D:\klients2\00-my-project\mult-serial\lumi.png" class="hero-image" alt="Lumi">
+            </div>
+            
+            <h1 id="txt-title">...</h1>
+            <p class="subtitle" id="txt-subtitle">...</p>
+            <p class="small-hint" id="txt-hint">...</p>
+        </div>
+
+        <div class="info-block">
+            <div class="info-title" id="txt-info-title">...</div>
+            <div class="info-text" id="txt-info-desc">...</div>
+            <div class="important-note" id="txt-important">...</div>
+        </div>
+
+        <div class="action-block">
+            <a href="#" id="main-btn" class="magic-btn">
+                ...
+            </a>
+        </div>
+
+        <footer>
+            <p id="txt-footer">Trioland: Where every action matters</p>
+        </footer>
+    </div>
+
+    <script>
+        const content = {
+            ru: {
+                title: "Секретная Аудио-История",
+                subtitle: "Что случилось с золотым орехом?",
+                hint: "Чтобы открыть, позови Маму или Папу.",
+                infoTitle: "Терапевтическая сказка на ночь",
+                infoDesc: "Аудио-история, созданная по методикам детских психологов. Мягко готовит ребёнка ко сну, снимает возбуждение. Специальный ритм повествования и звуковое сопровождение успокаивают нервную систему.",
+                important: "Важно: Это терапевтический инструмент для завершения дня — включайте, когда ребёнок уже в кровати и настроен на отдых.",
+                btn: "Получить бесплатно",
+                footer: "ТриоЛенд: Где каждое действие имеет значение",
+                link: "https://t.me/ManyBot"
+            },
+            en: {
+                title: "Secret Audio Story",
+                subtitle: "What Happened to the Golden Acorn?",
+                hint: "To unlock, call Mom or Dad.",
+                infoTitle: "Therapeutic Bedtime Story for Deep Sleep",
+                infoDesc: "An audio story created using child psychology techniques. Gently prepares your child for sleep and reduces overstimulation. Special narrative rhythm and sound accompaniment calm the nervous system.",
+                important: "Important: This is a therapeutic tool for ending the day—play it when your child is already in bed and ready to rest.",
+                btn: "Get it free",
+                footer: "Trioland: Where every action matters",
+                link: "https://gumroad.com"
+            }
+        };
+
+        function initDust() {
+            const container = document.getElementById('dust-container');
+            const count = 35;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'dust-particle';
+                const size = Math.random() * 4 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                p.style.animationDelay = (Math.random() * -20) + 's';
+                container.appendChild(p);
+            }
+        }
+
+        function setLang(lang) {
+            if(!content[lang]) lang = 'en';
+            
+            document.getElementById('txt-title').textContent = content[lang].title;
+            document.getElementById('txt-subtitle').textContent = content[lang].subtitle;
+            document.getElementById('txt-hint').textContent = content[lang].hint;
+            document.getElementById('txt-info-title').textContent = content[lang].infoTitle;
+            document.getElementById('txt-info-desc').textContent = content[lang].infoDesc;
+            document.getElementById('txt-important').textContent = content[lang].important;
+            document.getElementById('txt-footer').textContent = content[lang].footer;
+            
+            const btn = document.getElementById('main-btn');
+            btn.textContent = content[lang].btn;
+            btn.href = content[lang].link;
+            
+            document.getElementById('main-app').classList.add('ready');
+        }
+
+        function playWoodKnock() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioCtx();
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(150, ctx.currentTime);
+                osc1.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(800, ctx.currentTime);
+                osc2.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.05);
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc1.start();
+                osc2.start();
+                osc1.stop(ctx.currentTime + 0.2);
+                osc2.stop(ctx.currentTime + 0.2);
+            } catch(err) {}
+        }
+
+        function detectLanguage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('lang')) return urlParams.get('lang');
+
+            const userLanguages = navigator.languages || [navigator.language || navigator.userLanguage];
+            for (let l of userLanguages) {
+                if (l.toLowerCase().includes('ru')) return 'ru';
+            }
+
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const ruZones = ['Europe/Moscow', 'Europe/Saratov', 'Asia/Yekaterinburg', 'Asia/Novosibirsk'];
+                if (ruZones.includes(timezone)) return 'ru';
+            } catch(e) {}
+
+            return 'en';
+        }
+
+        (function() {
+            initDust();
+            const finalLang = detectLanguage();
+            setLang(finalLang);
+
+            const btn = document.getElementById('main-btn');
+            btn.addEventListener('pointerdown', playWoodKnock);
+        })();
+    </script>
+</body>
+</html>
