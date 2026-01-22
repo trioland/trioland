@@ -402,11 +402,19 @@
 
             const btn = document.getElementById('main-btn');
             btn.addEventListener('pointerdown', playWoodKnock);
+                        // Отслеживание клика по кнопке Gumroad
+                        btn.addEventListener('click', function() {
+                        if (btn.href.includes('gumroad')) {
+                        ym(106383734, 'reachGoal', 'gumroad_click');
+                            }
+                        });
+                            
         })();
     </script>
 </body>
 
 </html>
+
 
 
 
